@@ -1,5 +1,3 @@
-package dev.marcelkaemper.chess;
-
 import javax.swing.*;
 import java.awt.*;
 
