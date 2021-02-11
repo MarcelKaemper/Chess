@@ -8,6 +8,7 @@ public class Chess extends Canvas {
         JFrame frame = new JFrame("Chess");
         Canvas canvas = new Chess();
         canvas.setSize(430, 430);
+        canvas.setBackground(Color.gray);
         frame.add(canvas);
         frame.pack();
         frame.setVisible(true);
@@ -16,8 +17,8 @@ public class Chess extends Canvas {
 
     public void paint(Graphics g) {
 
-        g.setColor(Color.GRAY);
-        g.fillRect(0, 0, 430, 430);
+        //g.setColor(Color.GRAY);
+        //g.fillRect(0, 0, 430, 430);
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
         // Draw chessboard
