@@ -4,12 +4,21 @@ package pieces;
 import main.Cell;
 import main.EnumColor;
 
+import java.net.URL;
+
 public abstract class Piece implements IMovement {
 
-    private String texture;
+    private URL texture;
     private Cell position;
     private Boolean hasMoved;
     private EnumColor color;
+
+    public Piece(URL texture, Cell position, Boolean hasMoved, EnumColor color) {
+        setTexture(texture);
+        setPosition(position);
+        setHasMoved(hasMoved);
+        setColor(color);
+    }
 
     public abstract void move();
 
@@ -20,15 +29,15 @@ public abstract class Piece implements IMovement {
         return color;
     }
 
-    public void setColor(EnumColor color) {
+    private void setColor(EnumColor color) {
         this.color = color;
     }
 
-    public String getTexture() {
+    public URL getTexture() {
         return texture;
     }
 
-    public void setTexture(String texture) {
+    private void setTexture(URL texture) {
         this.texture = texture;
     }
 
@@ -36,7 +45,7 @@ public abstract class Piece implements IMovement {
         return position;
     }
 
-    public void setPosition(Cell position) {
+    private void setPosition(Cell position) {
         this.position = position;
     }
 
@@ -44,7 +53,7 @@ public abstract class Piece implements IMovement {
         return hasMoved;
     }
 
-    public void setHasMoved(Boolean hasMoved) {
+    private void setHasMoved(Boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
 }

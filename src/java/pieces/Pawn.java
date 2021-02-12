@@ -1,11 +1,15 @@
 package pieces;
 
 import main.Cell;
+import main.EnumColor;
+
+import java.net.URL;
 
 public class Pawn extends Piece {
-    @Override
-    public boolean validMove() {
-        return false;
+
+
+    public Pawn(URL texture, Cell position, Boolean hasMoved, EnumColor color) {
+        super(texture, position, hasMoved, color);
     }
 
     @Override
