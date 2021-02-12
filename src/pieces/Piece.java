@@ -1,6 +1,5 @@
 package pieces;
 
-
 import main.Cell;
 import main.EnumColor;
 
@@ -23,7 +22,6 @@ public abstract class Piece implements IMovement {
     public abstract void move();
 
     public abstract boolean validMove(Cell toPosition);
-
 
     public EnumColor getColor() {
         return color;
@@ -56,4 +54,5 @@ public abstract class Piece implements IMovement {
     private void setHasMoved(Boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
+
 }

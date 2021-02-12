@@ -14,6 +14,9 @@ import java.util.List;
 
 public class Chess extends JPanel {
 
+    private static final List<Cell> cells = new ArrayList<>();
+    static URL pawn_t;
+
     public Chess() {
 
         setPreferredSize(new Dimension(430, 430));
@@ -34,9 +37,6 @@ public class Chess extends JPanel {
         });
 
     }
-
-    private static List<Cell> cells = new ArrayList<>();
-    static URL pawn_t;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -61,7 +61,6 @@ public class Chess extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         System.out.println(cells.size());
-
 
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
@@ -123,6 +122,7 @@ public class Chess extends JPanel {
         }
         return null;
     }
+
     private Cell getCell(int x, int y) {
         for (Cell cell : cells) {
             if (cell.getRect().contains(x, y)) {
@@ -131,4 +131,5 @@ public class Chess extends JPanel {
         }
         return null;
     }
+
 }

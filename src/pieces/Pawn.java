@@ -7,7 +7,6 @@ import java.net.URL;
 
 public class Pawn extends Piece {
 
-
     public Pawn(URL texture, Cell position, Boolean hasMoved, EnumColor color) {
         super(texture, position, hasMoved, color);
     }
@@ -21,4 +20,5 @@ public class Pawn extends Piece {
     public boolean validMove(Cell toPosition) {
         return false;
     }
+
 }

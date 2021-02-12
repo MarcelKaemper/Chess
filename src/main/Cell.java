@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 
 public class Cell {
+
     private int pos_x;
     private int pos_y;
     private EnumColor color;
@@ -16,7 +17,6 @@ public class Cell {
         setColor(color);
         setRect(rect);
     }
-
 
     public EnumColor getColor() {
         return color;
@@ -57,4 +57,5 @@ public class Cell {
     public void setCoordinate(String coordinate) {
         this.coordinate = coordinate;
     }
+
 }
