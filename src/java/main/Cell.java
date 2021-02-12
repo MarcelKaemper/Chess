@@ -3,10 +3,10 @@ package main;
 public class Cell {
     private int pos_x;
     private int pos_y;
-    private EnumColor color;
+    private main.EnumColor color;
     private String coordinate;
 
-    public Cell(int pos_x, int pos_y, EnumColor color, String coordinate) {
+    public Cell(int pos_x, int pos_y, main.EnumColor color, String coordinate) {
         setPos_x(pos_x);
         setPos_y(pos_y);
         setCoordinate(coordinate);
@@ -14,11 +14,11 @@ public class Cell {
     }
 
 
-    public EnumColor getColor() {
+    public main.EnumColor getColor() {
         return color;
     }
 
-    public void setColor(EnumColor color) {
+    public void setColor(main.EnumColor color) {
         this.color = color;
     }
 
