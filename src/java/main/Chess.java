@@ -2,26 +2,51 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chess extends Canvas {
+public class Chess extends JPanel {
+
+    public Chess() {
+
+        setPreferredSize(new Dimension(430, 430));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                System.out.println("Click X: " + e.getX() + " Y: " + e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                System.out.println("Release X: " + e.getX() + " Y: " + e.getY());
+            }
+        });
+
+    }
 
     List<Cell> cells = new ArrayList<>();
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Chess");
-        Canvas canvas = new Chess();
-        canvas.setSize(430, 430);
-        canvas.setBackground(Color.gray);
-        frame.add(canvas);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setResizable(false);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame();
+
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(new Chess());
+            frame.setResizable(false);
+            frame.pack();
+
+            frame.setLocationByPlatform(true);
+            frame.setVisible(true);
+        });
+
     }
 
-    public void paint(Graphics g) {
-
+    @Override
+    protected void paintComponent(Graphics g) {
         System.out.println(cells.size());
 
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
