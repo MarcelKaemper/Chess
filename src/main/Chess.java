@@ -1,7 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Chess extends Canvas {
+
+    List<Cell> cells = new ArrayList<>();
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Chess");
         Canvas canvas = new Chess();
@@ -15,8 +20,8 @@ public class Chess extends Canvas {
 
     public void paint(Graphics g) {
 
-        //g.setColor(Color.GRAY);
-        //g.fillRect(0, 0, 430, 430);
+        System.out.println(cells.size());
+
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
         // Draw chessboard
@@ -41,6 +46,12 @@ public class Chess extends Canvas {
                         g.setColor(Color.DARK_GRAY);
                     }
                 }
+                if (cells.size() < 64) {
+                    EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
+                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - j));
+                    cells.add(cell);
+                }
+
                 g.fillRect(x, y, 50, 50);
                 g.setColor(Color.BLACK);
                 g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
@@ -49,8 +60,9 @@ public class Chess extends Canvas {
             y += 50;
             x = 30;
         }
-
-        //g.setFont(Font.getFont(Font.SERIF));
-
+        System.out.println(cells.get(0).getCoordinate());
+        System.out.println(cells.get(0).getColor().toString());
+        System.out.println("X: " + cells.get(0).getPos_x());
+        System.out.println("Y: " + cells.get(0).getPos_y());
     }
 }
