@@ -1,3 +1,5 @@
+package main;
+
 public class Cell {
     private int pos_x;
     private int pos_y;
