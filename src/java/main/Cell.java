@@ -1,25 +1,37 @@
 package main;
 
+import java.awt.*;
+
 public class Cell {
     private int pos_x;
     private int pos_y;
-    private main.EnumColor color;
+    private EnumColor color;
     private String coordinate;
+    private Shape rect;
 
-    public Cell(int pos_x, int pos_y, main.EnumColor color, String coordinate) {
+    public Cell(int pos_x, int pos_y, EnumColor color, String coordinate, Shape rect) {
         setPos_x(pos_x);
         setPos_y(pos_y);
         setCoordinate(coordinate);
         setColor(color);
+        setRect(rect);
     }
 
 
-    public main.EnumColor getColor() {
+    public EnumColor getColor() {
         return color;
     }
 
-    public void setColor(main.EnumColor color) {
+    public void setColor(EnumColor color) {
         this.color = color;
+    }
+
+    public Shape getRect() {
+        return rect;
+    }
+
+    public void setRect(Shape rect) {
+        this.rect = rect;
     }
 
     public int getPos_x() {

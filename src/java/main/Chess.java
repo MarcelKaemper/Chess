@@ -16,13 +16,15 @@ public class Chess extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                System.out.println("Click X: " + e.getX() + " Y: " + e.getY());
+                String coordinate = getCell(e.getX(), e.getY());
+                System.out.println("Coordinated clicked: " + coordinate);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                System.out.println("Release X: " + e.getX() + " Y: " + e.getY());
+                String coordinate = getCell(e.getX(), e.getY());
+                System.out.println("Coordinated released: " + coordinate);
             }
         });
 
@@ -47,6 +49,7 @@ public class Chess extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
         System.out.println(cells.size());
 
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
@@ -73,13 +76,13 @@ public class Chess extends JPanel {
                         g.setColor(Color.DARK_GRAY);
                     }
                 }
+                Shape rect = new Rectangle(x, y, 50, 50);
                 if (cells.size() < 64) {
                     EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
-                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - j));
+                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - i), rect);
                     cells.add(cell);
                 }
-
-                g.fillRect(x, y, 50, 50);
+                g2d.fill(rect);
                 g.setColor(Color.BLACK);
                 g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
                 x += 50;
@@ -91,5 +94,14 @@ public class Chess extends JPanel {
         System.out.println(cells.get(0).getColor().toString());
         System.out.println("X: " + cells.get(0).getPos_x());
         System.out.println("Y: " + cells.get(0).getPos_y());
+    }
+
+    private String getCell(int x, int y) {
+        for (Cell cell : cells) {
+            if (cell.getRect().contains(x, y)) {
+                return cell.getCoordinate();
+            }
+        }
+        return null;
     }
 }
