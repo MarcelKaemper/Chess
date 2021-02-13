@@ -21,6 +21,7 @@ public abstract class Piece implements IMovement {
 
     public void move(Cell toPosition) {
         if (validMove(toPosition)) {
+            setHasMoved(true);
             System.out.println("Move is valid");
             getPosition().setPiece(null);
             setPosition(toPosition);
