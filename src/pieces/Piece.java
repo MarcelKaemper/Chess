@@ -19,7 +19,16 @@ public abstract class Piece implements IMovement {
         setColor(color);
     }
 
-    public abstract void move();
+    public void move(Cell toPosition) {
+        if (validMove(toPosition)) {
+            System.out.println("Move is valid");
+            getPosition().setPiece(null);
+            setPosition(toPosition);
+            toPosition.setPiece(this);
+        } else {
+            System.out.println("Move is invalid");
+        }
+    }
 
     public abstract boolean validMove(Cell toPosition);
 

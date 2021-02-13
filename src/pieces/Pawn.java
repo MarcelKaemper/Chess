@@ -12,13 +12,9 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
     public boolean validMove(Cell toPosition) {
-        return false;
+        System.out.println("checking validity of move");
+        return true;
     }
 
 }

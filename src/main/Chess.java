@@ -1,6 +1,7 @@
 package main;
 
 import pieces.Pawn;
+import pieces.Piece;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,7 +16,10 @@ import java.util.List;
 public class Chess extends JPanel {
 
     private static final List<Cell> cells = new ArrayList<>();
-    static URL pawn_t;
+    private static URL pawn_t;
+
+    private static String pressed_on = "";
+    private static String released_on = "";
 
     public Chess() {
 
@@ -26,6 +30,7 @@ public class Chess extends JPanel {
                 super.mousePressed(e);
                 String coordinate = getCellCoordinate(e.getX(), e.getY());
                 System.out.println("Coordinated clicked: " + coordinate);
+                pressed_on = coordinate;
             }
 
             @Override
@@ -33,6 +38,8 @@ public class Chess extends JPanel {
                 super.mouseReleased(e);
                 String coordinate = getCellCoordinate(e.getX(), e.getY());
                 System.out.println("Coordinated released: " + coordinate);
+                released_on = coordinate;
+                processMouseDrag();
             }
         });
 
@@ -51,6 +58,25 @@ public class Chess extends JPanel {
             frame.setVisible(true);
         });
         pawn_t = Chess.class.getClassLoader().getResource("textures/white_pawn.png");
+    }
+
+    private void processMouseDrag() {
+        if (!pressed_on.equals(released_on)) {
+            System.out.println("Processing move");
+            Piece pieceToMove = getPieceByCoordinate(pressed_on);
+            if (pieceToMove != null) {
+                System.out.println("Piece found on cell");
+                System.out.println(pieceToMove.toString());
+                Cell moveTo = getCellByCoordinate(released_on);
+                pieceToMove.move(moveTo);
+                repaint();
+            } else {
+                System.out.println("No piece on cell");
+            }
+            // piece.move() ----> validMove()
+        } else {
+            System.out.println("Pressed on equals released on. Not processing action.");
+        }
     }
 
     private void addPieces() {
@@ -88,19 +114,28 @@ public class Chess extends JPanel {
                 }
                 Shape rect = new Rectangle(x, y, 50, 50);
                 g2d.fill(rect);
+                // Initialize cells array / create cells
                 if (cells.size() < 64) {
                     EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
-                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - i), rect);
+                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - i), rect, null);
                     cells.add(cell);
+                    if (8 - i == 2 /*|| 8 - i == 7*/) {
+                        Piece p = new Pawn(pawn_t, cell, false, EnumColor.WHITE);
+                        cell.setPiece(p);
+                    }
                 }
-                if (8 - i == 7 || 8 - i == 2) {
-                    Pawn p = new Pawn(pawn_t, getCell(j, i), false, EnumColor.WHITE);
+                /*if (8 - i == 7 || 8 - i == 2) {
+                    Cell cell = getCellByCoordinate(letters[j] + String.valueOf(8 - i));
+                    Pawn p = new Pawn(pawn_t, cell, false, EnumColor.WHITE);
+                    cell.setPiece(p);
+
+
                     try {
                         g2d.drawImage(ImageIO.read(p.getTexture()), x - 6, y - 6, null);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                } */
                 g.setColor(Color.BLACK);
                 g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
                 x += 50;
@@ -108,6 +143,25 @@ public class Chess extends JPanel {
             y += 50;
             x = 30;
         }
+
+
+        // Draw pieces if cells initialized
+        if (cells.size() >= 64) {
+            for (Cell cell : cells) {
+                Piece p = cell.getPiece();
+                int cell_x = cell.getPos_x();
+                int cell_y = cell.getPos_y();
+                // If piece on cell
+                if (p != null) {
+                    try {
+                        g2d.drawImage(ImageIO.read(p.getTexture()), cell_x - 6, cell_y - 6, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         System.out.println(cells.get(0).getCoordinate());
         System.out.println(cells.get(0).getColor().toString());
         System.out.println("X: " + cells.get(0).getPos_x());
@@ -120,13 +174,32 @@ public class Chess extends JPanel {
                 return cell.getCoordinate();
             }
         }
+        return "";
+    }
+
+    private Cell getCellByCoordinate(String coordinate) {
+        for (Cell cell : cells) {
+            if (cell.getCoordinate().equals(coordinate)) {
+                return cell;
+            }
+        }
         return null;
     }
+
 
     private Cell getCell(int x, int y) {
         for (Cell cell : cells) {
             if (cell.getRect().contains(x, y)) {
                 return cell;
+            }
+        }
+        return null;
+    }
+
+    private Piece getPieceByCoordinate(String coordinate) {
+        for (Cell cell : cells) {
+            if (cell.getCoordinate().equals(coordinate)) {
+                return cell.getPiece();
             }
         }
         return null;

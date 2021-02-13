@@ -1,21 +1,33 @@
 package main;
 
+import pieces.Piece;
+
 import java.awt.*;
 
 public class Cell {
 
     private int pos_x;
     private int pos_y;
+    private Piece piece;
     private EnumColor color;
     private String coordinate;
     private Shape rect;
 
-    public Cell(int pos_x, int pos_y, EnumColor color, String coordinate, Shape rect) {
+    public Cell(int pos_x, int pos_y, EnumColor color, String coordinate, Shape rect, Piece piece) {
         setPos_x(pos_x);
         setPos_y(pos_y);
         setCoordinate(coordinate);
         setColor(color);
         setRect(rect);
+        setPiece(piece);
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     public EnumColor getColor() {
