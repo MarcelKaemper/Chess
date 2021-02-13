@@ -119,28 +119,16 @@ public class Chess extends JPanel {
                 // Initialize cells array / create cells
                 if (cells.size() < 64) {
                     EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
-                    Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - i), rect, null);
+                    Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
                     cells.add(cell);
                     if (8 - i == 2) {
                         Piece p = new Pawn(pawn_white, cell, false, EnumColor.WHITE);
                         cell.setPiece(p);
-                    }else if(8 - i == 7){
+                    } else if (8 - i == 7) {
                         Piece p = new Pawn(pawn_black, cell, false, EnumColor.BLACK);
                         cell.setPiece(p);
                     }
                 }
-                /*if (8 - i == 7 || 8 - i == 2) {
-                    Cell cell = getCellByCoordinate(letters[j] + String.valueOf(8 - i));
-                    Pawn p = new Pawn(pawn_t, cell, false, EnumColor.WHITE);
-                    cell.setPiece(p);
-
-
-                    try {
-                        g2d.drawImage(ImageIO.read(p.getTexture()), x - 6, y - 6, null);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } */
                 g.setColor(Color.BLACK);
                 g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
                 x += 50;
