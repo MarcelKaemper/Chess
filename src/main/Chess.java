@@ -16,7 +16,8 @@ import java.util.List;
 public class Chess extends JPanel {
 
     private static final List<Cell> cells = new ArrayList<>();
-    private static URL pawn_t;
+    private static URL pawn_white;
+    private static URL pawn_black;
 
     private static String pressed_on = "";
     private static String released_on = "";
@@ -57,7 +58,8 @@ public class Chess extends JPanel {
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
         });
-        pawn_t = Chess.class.getClassLoader().getResource("textures/white_pawn.png");
+        pawn_white = Chess.class.getClassLoader().getResource("textures/white_pawn.png");
+        pawn_black = Chess.class.getClassLoader().getResource("textures/black_pawn.png");
     }
 
     private void processMouseDrag() {
@@ -119,8 +121,11 @@ public class Chess extends JPanel {
                     EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
                     Cell cell = new Cell(x, y, color, letters[j] + String.valueOf(8 - i), rect, null);
                     cells.add(cell);
-                    if (8 - i == 2 /*|| 8 - i == 7*/) {
-                        Piece p = new Pawn(pawn_t, cell, false, EnumColor.WHITE);
+                    if (8 - i == 2) {
+                        Piece p = new Pawn(pawn_white, cell, false, EnumColor.WHITE);
+                        cell.setPiece(p);
+                    }else if(8 - i == 7){
+                        Piece p = new Pawn(pawn_black, cell, false, EnumColor.BLACK);
                         cell.setPiece(p);
                     }
                 }
