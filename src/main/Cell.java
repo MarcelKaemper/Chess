@@ -10,16 +10,36 @@ public class Cell {
     private int pos_y;
     private Piece piece;
     private EnumColor color;
+    private char coord_x;
+    private int coord_y;
     private String coordinate;
     private Shape rect;
 
-    public Cell(int pos_x, int pos_y, EnumColor color, String coordinate, Shape rect, Piece piece) {
+    public Cell(int pos_x, int pos_y, EnumColor color, char coord_x, int coord_y, Shape rect, Piece piece) {
         setPos_x(pos_x);
         setPos_y(pos_y);
-        setCoordinate(coordinate);
         setColor(color);
+        setCoord_x(coord_x);
+        setCoord_y(coord_y);
+        setCoordinate(coord_x + String.valueOf(coord_y));
         setRect(rect);
         setPiece(piece);
+    }
+
+    public char getCoord_x() {
+        return coord_x;
+    }
+
+    public void setCoord_x(char coord_x) {
+        this.coord_x = coord_x;
+    }
+
+    public int getCoord_y() {
+        return coord_y;
+    }
+
+    public void setCoord_y(int coord_y) {
+        this.coord_y = coord_y;
     }
 
     public Piece getPiece() {
