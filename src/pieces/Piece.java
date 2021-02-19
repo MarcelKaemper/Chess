@@ -22,20 +22,6 @@ public abstract class Piece implements IMovement {
         setPieceType(pieceType);
     }
 
-    public void move(Cell toPosition) {
-        if (toPosition != null && validMove(toPosition)) {
-            setHasMoved(true);
-            System.out.println("Move is valid");
-            getPosition().setPiece(null);
-            setPosition(toPosition);
-            toPosition.setPiece(this);
-        } else {
-            System.out.println("Move is invalid");
-        }
-    }
-
-    public abstract boolean validMove(Cell toPosition);
-
     public static void createInitPiece(Cell cell, int i, int j, char[] letters) {
         // Pawn
         if (8 - i == 2) {
@@ -103,6 +89,20 @@ public abstract class Piece implements IMovement {
             cell.getPiece().setPosition(cell);
         }
     }
+
+    public void move(Cell toPosition) {
+        if (toPosition != null && validMove(toPosition)) {
+            setHasMoved(true);
+            System.out.println("Move is valid");
+            getPosition().setPiece(null);
+            setPosition(toPosition);
+            toPosition.setPiece(this);
+        } else {
+            System.out.println("Move is invalid");
+        }
+    }
+
+    public abstract boolean validMove(Cell toPosition);
 
     public EnumColor getColor() {
         return color;

@@ -78,7 +78,7 @@ public class Chess extends JPanel {
 
         if (Game.color.equals(EnumColor.WHITE)) {
             for (int i = 0; i < 8; i++) {
-                drawCoordinateNumbers(i, g, number, x, y);
+                drawCoordinateNumbers(i, g, number);
                 number--;
                 for (int j = 0; j < 8; j++) {
                     drawChessboard(i, j, g, letters, g2d, x, y);
@@ -89,7 +89,7 @@ public class Chess extends JPanel {
             }
         } else {
             for (int i = 7; i >= 0; i--) {
-                drawCoordinateNumbers(i, g, number, x, y);
+                drawCoordinateNumbers(i, g, number);
                 number--;
                 for (int j = 7; j >= 0; j--) {
                     drawChessboard(i, j, g, letters, g2d, x, y);
@@ -120,7 +120,7 @@ public class Chess extends JPanel {
 
     }
 
-    private void drawCoordinateNumbers(int i, Graphics g, int number, int x, int y) {
+    private void drawCoordinateNumbers(int i, Graphics g, int number) {
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(number), 10, (25 * (i + 1) + (25 * i)) + 4);
     }
