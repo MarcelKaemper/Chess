@@ -41,16 +41,22 @@ public class Pawn extends Piece {
                 if (cell.getPiece() == null) {
                     setDoubleMoved(true);
 
-                    Cell left = Cell.getCellByCoords((char) (toPosition.getCoord_x() - 1), toPosition.getCoord_y());
-                    Cell right = Cell.getCellByCoords((char) (toPosition.getCoord_x() + 1), toPosition.getCoord_y());
+                    Cell left = null;
+                    Cell right = null;
+                    if(toPosition.getCoord_x() != 'a') {
+                        right = Cell.getCellByCoords((char) (toPosition.getCoord_x() + 1), toPosition.getCoord_y());
+                    }
+                    if(toPosition.getCoord_x() != 'h') {
+                        left = Cell.getCellByCoords((char) (toPosition.getCoord_x() - 1), toPosition.getCoord_y());
+                    }
 
-                    if (left.getPiece() != null && left.getPiece().getPieceType() == EnumPiece.PAWN) {
+                    if (left != null && left.getPiece() != null && left.getPiece().getPieceType() == EnumPiece.PAWN) {
                         setEnPassant(true);
                         Piece leftPiece = left.getPiece();
                         ((Pawn) leftPiece).setEnPassant(true);
                     }
 
-                    if (right.getPiece() != null && right.getPiece().getPieceType() == EnumPiece.PAWN) {
+                    if (right != null && right.getPiece() != null && right.getPiece().getPieceType() == EnumPiece.PAWN) {
                         setEnPassant(true);
                         Piece rightPiece = right.getPiece();
                         ((Pawn) rightPiece).setEnPassant(true);
