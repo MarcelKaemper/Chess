@@ -17,6 +17,8 @@ public class Chess extends JPanel {
 
     public Chess() {
 
+        Game.color = EnumColor.WHITE;
+
         setPreferredSize(new Dimension(430, 430));
         addMouseListener(new MouseAdapter() {
             @Override
@@ -74,91 +76,29 @@ public class Chess extends JPanel {
         int x = 30;
         int y = 0;
         int number = 8;
-        for (int i = 0; i < 8; i++) {
-            g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(number), 10, (25 * (i + 1) + (25 * i)) + 4);
-            number--;
-            for (int j = 0; j < 8; j++) {
-                if (i % 2 != 0) {
-                    if (j % 2 == 0) {
-                        g.setColor(Color.DARK_GRAY);
-                    } else {
-                        g.setColor(Color.LIGHT_GRAY);
-                    }
-                } else {
-                    if (j % 2 == 0) {
-                        g.setColor(Color.LIGHT_GRAY);
-                    } else {
-                        g.setColor(Color.DARK_GRAY);
-                    }
+
+        if (Game.color.equals(EnumColor.WHITE)) {
+            for (int i = 0; i < 8; i++) {
+                drawCoordinateNumbers(i, g, number, x, y);
+                number--;
+                for (int j = 0; j < 8; j++) {
+                    drawChessboard(i, j, g, letters, g2d, x, y);
+                    x += 50;
                 }
-                Shape rect = new Rectangle(x, y, 50, 50);
-                g2d.fill(rect);
-                // Initialize cells array / create cells
-                if (Cell.cells.size() < 64) {
-                    EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
-                    Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
-
-                    // Pawn
-                    if (8 - i == 2) {
-                        Piece p = new Pawn(Texture.pawn_white, cell, false, EnumColor.WHITE, EnumPiece.PAWN, false, false);
-                        cell.setPiece(p);
-                    } else if (8 - i == 7) {
-                        Piece p = new Pawn(Texture.pawn_black, cell, false, EnumColor.BLACK, EnumPiece.PAWN, false, false);
-                        cell.setPiece(p);
-                    }
-
-                    // Rook
-                    if (8 - i == 1 && (letters[j] == 'a' || letters[j] == 'h')) {
-                        Piece p = new Rook(Texture.rook_white, cell, false, EnumColor.WHITE, EnumPiece.ROOK);
-                        cell.setPiece(p);
-                    } else if (8 - i == 8 && (letters[j] == 'a' || letters[j] == 'h')) {
-                        Piece p = new Rook(Texture.rook_black, cell, false, EnumColor.BLACK, EnumPiece.ROOK);
-                        cell.setPiece(p);
-                    }
-
-                    // Queen
-                    if (8 - i == 1 && (letters[j] == 'd')) {
-                        Piece p = new Queen(Texture.queen_white, cell, false, EnumColor.WHITE, EnumPiece.QUEEN);
-                        cell.setPiece(p);
-                    } else if (8 - i == 8 && (letters[j] == 'd')) {
-                        Piece p = new Queen(Texture.queen_black, cell, false, EnumColor.BLACK, EnumPiece.QUEEN);
-                        cell.setPiece(p);
-                    }
-
-                    // Bishop
-                    if (8 - i == 1 && (letters[j] == 'c' || letters[j] == 'f')) {
-                        Piece p = new Bishop(Texture.bishop_white, cell, false, EnumColor.WHITE, EnumPiece.BISHOP);
-                        cell.setPiece(p);
-                    } else if (8 - i == 8 && (letters[j] == 'c' || letters[j] == 'f')) {
-                        Piece p = new Bishop(Texture.bishop_black, cell, false, EnumColor.BLACK, EnumPiece.BISHOP);
-                        cell.setPiece(p);
-                    }
-
-                    // Knight
-                    if (8 - i == 1 && (letters[j] == 'b' || letters[j] == 'g')) {
-                        Piece p = new Knight(Texture.knight_white, cell, false, EnumColor.WHITE, EnumPiece.KNIGHT);
-                        cell.setPiece(p);
-                    } else if (8 - i == 8 && (letters[j] == 'b' || letters[j] == 'g')) {
-                        Piece p = new Knight(Texture.knight_black, cell, false, EnumColor.BLACK, EnumPiece.KNIGHT);
-                        cell.setPiece(p);
-                    }
-
-                    // King
-                    if (8 - i == 1 && letters[j] == 'e') {
-                        Piece p = new King(Texture.king_white, cell, false, EnumColor.WHITE, EnumPiece.KING);
-                        cell.setPiece(p);
-                    } else if (8 - i == 8 && letters[j] == 'e') {
-                        Piece p = new King(Texture.king_black, cell, false, EnumColor.BLACK, EnumPiece.KING);
-                        cell.setPiece(p);
-                    }
-                }
-                g.setColor(Color.BLACK);
-                g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
-                x += 50;
+                y += 50;
+                x = 30;
             }
-            y += 50;
-            x = 30;
+        } else {
+            for (int i = 7; i >= 0; i--) {
+                drawCoordinateNumbers(i, g, number, x, y);
+                number--;
+                for (int j = 7; j >= 0; j--) {
+                    drawChessboard(i, j, g, letters, g2d, x, y);
+                    x += 50;
+                }
+                y += 50;
+                x = 30;
+            }
         }
 
 
@@ -179,6 +119,90 @@ public class Chess extends JPanel {
             }
         }
 
+    }
+
+    private void drawCoordinateNumbers(int i, Graphics g, int number, int x, int y) {
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(number), 10, (25 * (i + 1) + (25 * i)) + 4);
+    }
+
+    private void drawChessboard(int i, int j, Graphics g, char[] letters, Graphics2D g2d, int x, int y) {
+        if (i % 2 != 0) {
+            if (j % 2 == 0) {
+                g.setColor(Color.DARK_GRAY);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+        } else {
+            if (j % 2 == 0) {
+                g.setColor(Color.LIGHT_GRAY);
+            } else {
+                g.setColor(Color.DARK_GRAY);
+            }
+        }
+        Shape rect = new Rectangle(x, y, 50, 50);
+        g2d.fill(rect);
+        // Initialize cells array / create cells
+        if (Cell.cells.size() < 64) {
+            EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
+            Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
+
+            // Pawn
+            if (8 - i == 2) {
+                Piece p = new Pawn(Texture.pawn_white, cell, false, EnumColor.WHITE, EnumPiece.PAWN, false, false);
+                cell.setPiece(p);
+            } else if (8 - i == 7) {
+                Piece p = new Pawn(Texture.pawn_black, cell, false, EnumColor.BLACK, EnumPiece.PAWN, false, false);
+                cell.setPiece(p);
+            }
+
+            // Rook
+            if (8 - i == 1 && (letters[j] == 'a' || letters[j] == 'h')) {
+                Piece p = new Rook(Texture.rook_white, cell, false, EnumColor.WHITE, EnumPiece.ROOK);
+                cell.setPiece(p);
+            } else if (8 - i == 8 && (letters[j] == 'a' || letters[j] == 'h')) {
+                Piece p = new Rook(Texture.rook_black, cell, false, EnumColor.BLACK, EnumPiece.ROOK);
+                cell.setPiece(p);
+            }
+
+            // Queen
+            if (8 - i == 1 && (letters[j] == 'd')) {
+                Piece p = new Queen(Texture.queen_white, cell, false, EnumColor.WHITE, EnumPiece.QUEEN);
+                cell.setPiece(p);
+            } else if (8 - i == 8 && (letters[j] == 'd')) {
+                Piece p = new Queen(Texture.queen_black, cell, false, EnumColor.BLACK, EnumPiece.QUEEN);
+                cell.setPiece(p);
+            }
+
+            // Bishop
+            if (8 - i == 1 && (letters[j] == 'c' || letters[j] == 'f')) {
+                Piece p = new Bishop(Texture.bishop_white, cell, false, EnumColor.WHITE, EnumPiece.BISHOP);
+                cell.setPiece(p);
+            } else if (8 - i == 8 && (letters[j] == 'c' || letters[j] == 'f')) {
+                Piece p = new Bishop(Texture.bishop_black, cell, false, EnumColor.BLACK, EnumPiece.BISHOP);
+                cell.setPiece(p);
+            }
+
+            // Knight
+            if (8 - i == 1 && (letters[j] == 'b' || letters[j] == 'g')) {
+                Piece p = new Knight(Texture.knight_white, cell, false, EnumColor.WHITE, EnumPiece.KNIGHT);
+                cell.setPiece(p);
+            } else if (8 - i == 8 && (letters[j] == 'b' || letters[j] == 'g')) {
+                Piece p = new Knight(Texture.knight_black, cell, false, EnumColor.BLACK, EnumPiece.KNIGHT);
+                cell.setPiece(p);
+            }
+
+            // King
+            if (8 - i == 1 && letters[j] == 'e') {
+                Piece p = new King(Texture.king_white, cell, false, EnumColor.WHITE, EnumPiece.KING);
+                cell.setPiece(p);
+            } else if (8 - i == 8 && letters[j] == 'e') {
+                Piece p = new King(Texture.king_black, cell, false, EnumColor.BLACK, EnumPiece.KING);
+                cell.setPiece(p);
+            }
+        }
+        g.setColor(Color.BLACK);
+        g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
     }
 
 }
