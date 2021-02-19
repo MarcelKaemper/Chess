@@ -9,18 +9,20 @@ public abstract class Piece implements IMovement {
 
     private URL texture;
     private Cell position;
-    private Boolean hasMoved;
+    private boolean hasMoved;
     private EnumColor color;
+    private EnumPiece pieceType;
 
-    public Piece(URL texture, Cell position, Boolean hasMoved, EnumColor color) {
+    public Piece(URL texture, Cell position, boolean hasMoved, EnumColor color, EnumPiece pieceType) {
         setTexture(texture);
         setPosition(position);
         setHasMoved(hasMoved);
         setColor(color);
+        setPieceType(pieceType);
     }
 
     public void move(Cell toPosition) {
-        if (validMove(toPosition)) {
+        if (toPosition != null && validMove(toPosition)) {
             setHasMoved(true);
             System.out.println("Move is valid");
             getPosition().setPiece(null);
@@ -53,16 +55,24 @@ public abstract class Piece implements IMovement {
         return position;
     }
 
-    private void setPosition(Cell position) {
+    public void setPosition(Cell position) {
         this.position = position;
     }
 
-    public Boolean getHasMoved() {
+    public boolean getHasMoved() {
         return hasMoved;
     }
 
-    private void setHasMoved(Boolean hasMoved) {
+    private void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
+    }
+
+    public EnumPiece getPieceType() {
+        return pieceType;
+    }
+
+    private void setPieceType(EnumPiece pieceType) {
+        this.pieceType = pieceType;
     }
 
 }
