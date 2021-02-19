@@ -43,10 +43,10 @@ public class Pawn extends Piece {
 
                     Cell left = null;
                     Cell right = null;
-                    if(toPosition.getCoord_x() != 'a') {
+                    if (toPosition.getCoord_x() != 'a') {
                         right = Cell.getCellByCoords((char) (toPosition.getCoord_x() + 1), toPosition.getCoord_y());
                     }
-                    if(toPosition.getCoord_x() != 'h') {
+                    if (toPosition.getCoord_x() != 'h') {
                         left = Cell.getCellByCoords((char) (toPosition.getCoord_x() - 1), toPosition.getCoord_y());
                     }
 
