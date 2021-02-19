@@ -1,7 +1,7 @@
 package main;
 
-import pieces.Pawn;
-import pieces.Piece;
+import pieces.*;
+import statics.Texture;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,15 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Chess extends JPanel {
-
-    private static final List<Cell> cells = new ArrayList<>();
-    private static URL pawn_white;
-    private static URL pawn_black;
 
     private static String pressed_on = "";
     private static String released_on = "";
@@ -29,7 +22,7 @@ public class Chess extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                String coordinate = getCellCoordinate(e.getX(), e.getY());
+                String coordinate = Cell.getCellCoordinate(e.getX(), e.getY());
                 System.out.println("Coordinated clicked: " + coordinate);
                 pressed_on = coordinate;
             }
@@ -37,7 +30,7 @@ public class Chess extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                String coordinate = getCellCoordinate(e.getX(), e.getY());
+                String coordinate = Cell.getCellCoordinate(e.getX(), e.getY());
                 System.out.println("Coordinated released: " + coordinate);
                 released_on = coordinate;
                 processMouseDrag();
@@ -58,37 +51,22 @@ public class Chess extends JPanel {
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
         });
-        pawn_white = Chess.class.getClassLoader().getResource("textures/white_pawn.png");
-        pawn_black = Chess.class.getClassLoader().getResource("textures/black_pawn.png");
     }
 
     private void processMouseDrag() {
         if (!pressed_on.equals(released_on)) {
-            System.out.println("Processing move");
-            Piece pieceToMove = getPieceByCoordinate(pressed_on);
+            Piece pieceToMove = Cell.getPieceByPos(pressed_on);
             if (pieceToMove != null) {
-                System.out.println("Piece found on cell");
-                System.out.println(pieceToMove.toString());
-                Cell moveTo = getCellByCoordinate(released_on);
+                Cell moveTo = Cell.getCellByPos(released_on);
                 pieceToMove.move(moveTo);
                 repaint();
-            } else {
-                System.out.println("No piece on cell");
             }
-            // piece.move() ----> validMove()
-        } else {
-            System.out.println("Pressed on equals released on. Not processing action.");
         }
-    }
-
-    private void addPieces() {
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println(cells.size());
 
         char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
@@ -117,15 +95,61 @@ public class Chess extends JPanel {
                 Shape rect = new Rectangle(x, y, 50, 50);
                 g2d.fill(rect);
                 // Initialize cells array / create cells
-                if (cells.size() < 64) {
+                if (Cell.cells.size() < 64) {
                     EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
                     Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
-                    cells.add(cell);
+
+                    // Pawn
                     if (8 - i == 2) {
-                        Piece p = new Pawn(pawn_white, cell, false, EnumColor.WHITE);
+                        Piece p = new Pawn(Texture.pawn_white, cell, false, EnumColor.WHITE, EnumPiece.PAWN, false, false);
                         cell.setPiece(p);
                     } else if (8 - i == 7) {
-                        Piece p = new Pawn(pawn_black, cell, false, EnumColor.BLACK);
+                        Piece p = new Pawn(Texture.pawn_black, cell, false, EnumColor.BLACK, EnumPiece.PAWN, false, false);
+                        cell.setPiece(p);
+                    }
+
+                    // Rook
+                    if (8 - i == 1 && (letters[j] == 'a' || letters[j] == 'h')) {
+                        Piece p = new Rook(Texture.rook_white, cell, false, EnumColor.WHITE, EnumPiece.ROOK);
+                        cell.setPiece(p);
+                    } else if (8 - i == 8 && (letters[j] == 'a' || letters[j] == 'h')) {
+                        Piece p = new Rook(Texture.rook_black, cell, false, EnumColor.BLACK, EnumPiece.ROOK);
+                        cell.setPiece(p);
+                    }
+
+                    // Queen
+                    if (8 - i == 1 && (letters[j] == 'd')) {
+                        Piece p = new Queen(Texture.queen_white, cell, false, EnumColor.WHITE, EnumPiece.QUEEN);
+                        cell.setPiece(p);
+                    } else if (8 - i == 8 && (letters[j] == 'd')) {
+                        Piece p = new Queen(Texture.queen_black, cell, false, EnumColor.BLACK, EnumPiece.QUEEN);
+                        cell.setPiece(p);
+                    }
+
+                    // Bishop
+                    if (8 - i == 1 && (letters[j] == 'c' || letters[j] == 'f')) {
+                        Piece p = new Bishop(Texture.bishop_white, cell, false, EnumColor.WHITE, EnumPiece.BISHOP);
+                        cell.setPiece(p);
+                    } else if (8 - i == 8 && (letters[j] == 'c' || letters[j] == 'f')) {
+                        Piece p = new Bishop(Texture.bishop_black, cell, false, EnumColor.BLACK, EnumPiece.BISHOP);
+                        cell.setPiece(p);
+                    }
+
+                    // Knight
+                    if (8 - i == 1 && (letters[j] == 'b' || letters[j] == 'g')) {
+                        Piece p = new Knight(Texture.knight_white, cell, false, EnumColor.WHITE, EnumPiece.KNIGHT);
+                        cell.setPiece(p);
+                    } else if (8 - i == 8 && (letters[j] == 'b' || letters[j] == 'g')) {
+                        Piece p = new Knight(Texture.knight_black, cell, false, EnumColor.BLACK, EnumPiece.KNIGHT);
+                        cell.setPiece(p);
+                    }
+
+                    // King
+                    if (8 - i == 1 && letters[j] == 'e') {
+                        Piece p = new King(Texture.king_white, cell, false, EnumColor.WHITE, EnumPiece.KING);
+                        cell.setPiece(p);
+                    } else if (8 - i == 8 && letters[j] == 'e') {
+                        Piece p = new King(Texture.king_black, cell, false, EnumColor.BLACK, EnumPiece.KING);
                         cell.setPiece(p);
                     }
                 }
@@ -139,8 +163,8 @@ public class Chess extends JPanel {
 
 
         // Draw pieces if cells initialized
-        if (cells.size() >= 64) {
-            for (Cell cell : cells) {
+        if (Cell.cells.size() >= 64) {
+            for (Cell cell : Cell.cells) {
                 Piece p = cell.getPiece();
                 int cell_x = cell.getPos_x();
                 int cell_y = cell.getPos_y();
@@ -155,47 +179,6 @@ public class Chess extends JPanel {
             }
         }
 
-        System.out.println(cells.get(0).getCoordinate());
-        System.out.println(cells.get(0).getColor().toString());
-        System.out.println("X: " + cells.get(0).getPos_x());
-        System.out.println("Y: " + cells.get(0).getPos_y());
-    }
-
-    private String getCellCoordinate(int x, int y) {
-        for (Cell cell : cells) {
-            if (cell.getRect().contains(x, y)) {
-                return cell.getCoordinate();
-            }
-        }
-        return "";
-    }
-
-    private Cell getCellByCoordinate(String coordinate) {
-        for (Cell cell : cells) {
-            if (cell.getCoordinate().equals(coordinate)) {
-                return cell;
-            }
-        }
-        return null;
-    }
-
-
-    private Cell getCell(int x, int y) {
-        for (Cell cell : cells) {
-            if (cell.getRect().contains(x, y)) {
-                return cell;
-            }
-        }
-        return null;
-    }
-
-    private Piece getPieceByCoordinate(String coordinate) {
-        for (Cell cell : cells) {
-            if (cell.getCoordinate().equals(coordinate)) {
-                return cell.getPiece();
-            }
-        }
-        return null;
     }
 
 }
