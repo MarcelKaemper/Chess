@@ -3,9 +3,11 @@ package main;
 import pieces.Piece;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Cell {
 
+    public static java.util.List<Cell> cells = new ArrayList<>();
     private int pos_x;
     private int pos_y;
     private Piece piece;
@@ -24,13 +26,60 @@ public class Cell {
         setCoordinate(coord_x + String.valueOf(coord_y));
         setRect(rect);
         setPiece(piece);
+
+        cells.add(this);
+    }
+
+    public static Cell getCellByCoords(char coord_x, int coord_y) {
+        for (Cell cell : cells) {
+            if (cell.getCoord_x() == coord_x && cell.getCoord_y() == coord_y) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public static String getCellCoordinate(int x, int y) {
+        for (Cell cell : cells) {
+            if (cell.getRect().contains(x, y)) {
+                return cell.getCoordinate();
+            }
+        }
+        return "";
+    }
+
+    public static Cell getCellByPos(String coordinate) {
+        for (Cell cell : cells) {
+            if (cell.getCoordinate().equals(coordinate)) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public static Cell getCell(int x, int y) {
+        for (Cell cell : cells) {
+            if (cell.getRect().contains(x, y)) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public static Piece getPieceByPos(String coordinate) {
+        for (Cell cell : cells) {
+            if (cell.getCoordinate().equals(coordinate)) {
+                return cell.getPiece();
+            }
+        }
+        return null;
     }
 
     public char getCoord_x() {
         return coord_x;
     }
 
-    public void setCoord_x(char coord_x) {
+    private void setCoord_x(char coord_x) {
         this.coord_x = coord_x;
     }
 
@@ -38,7 +87,7 @@ public class Cell {
         return coord_y;
     }
 
-    public void setCoord_y(int coord_y) {
+    private void setCoord_y(int coord_y) {
         this.coord_y = coord_y;
     }
 
@@ -54,7 +103,7 @@ public class Cell {
         return color;
     }
 
-    public void setColor(EnumColor color) {
+    private void setColor(EnumColor color) {
         this.color = color;
     }
 
@@ -62,7 +111,7 @@ public class Cell {
         return rect;
     }
 
-    public void setRect(Shape rect) {
+    private void setRect(Shape rect) {
         this.rect = rect;
     }
 
@@ -70,7 +119,7 @@ public class Cell {
         return pos_x;
     }
 
-    public void setPos_x(int pos_x) {
+    private void setPos_x(int pos_x) {
         this.pos_x = pos_x;
     }
 
@@ -78,7 +127,7 @@ public class Cell {
         return pos_y;
     }
 
-    public void setPos_y(int pos_y) {
+    private void setPos_y(int pos_y) {
         this.pos_y = pos_y;
     }
 
@@ -86,7 +135,7 @@ public class Cell {
         return coordinate;
     }
 
-    public void setCoordinate(String coordinate) {
+    private void setCoordinate(String coordinate) {
         this.coordinate = coordinate;
     }
 
