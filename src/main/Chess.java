@@ -16,8 +16,6 @@ public class Chess extends JPanel {
 
     public Chess() {
 
-        Game.color = EnumColor.WHITE;
-
         setPreferredSize(new Dimension(430, 430));
         addMouseListener(new MouseAdapter() {
             @Override
@@ -76,7 +74,7 @@ public class Chess extends JPanel {
         int y = 0;
         int number = 8;
 
-        if (Game.color.equals(EnumColor.WHITE)) {
+        if (Game.color == EnumColor.WHITE) {
             for (int i = 0; i < 8; i++) {
                 drawCoordinateNumbers(i, g, number);
                 number--;
@@ -91,7 +89,7 @@ public class Chess extends JPanel {
             for (int i = 7; i >= 0; i--) {
                 drawCoordinateNumbers(i, g, number);
                 number--;
-                for (int j = 7; j >= 0; j--) {
+                for (int j = 0; j < 8; j++) {
                     drawChessboard(i, j, g, letters, g2d, x, y);
                     x += 50;
                 }
@@ -100,7 +98,43 @@ public class Chess extends JPanel {
             }
         }
 
+        drawChessTextures(g2d);
+    }
 
+    private static void drawCoordinateNumbers(int i, Graphics g, int number) {
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(number), 10, (25 * (i + 1) + (25 * i)) + 4);
+    }
+
+    private static void drawChessboard(int i, int j, Graphics g, char[] letters, Graphics2D g2d, int x, int y) {
+        if (i % 2 != 0) {
+            if (j % 2 == 0) {
+                g.setColor(Color.DARK_GRAY);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+        } else {
+            if (j % 2 == 0) {
+                g.setColor(Color.LIGHT_GRAY);
+            } else {
+                g.setColor(Color.DARK_GRAY);
+            }
+        }
+        Shape rect = new Rectangle(x, y, 50, 50);
+        g2d.fill(rect);
+
+        // Initialize cells array / create cells
+        if (Cell.cells.size() < 64) {
+            EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
+            Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
+            Piece.createInitPiece(cell, i, j, letters);
+        }
+
+        g.setColor(Color.BLACK);
+        g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
+    }
+
+    private static void drawChessTextures(Graphics2D g2d) {
         // Draw pieces if cells initialized
         if (Cell.cells.size() >= 64) {
             for (Cell cell : Cell.cells) {
@@ -117,38 +151,6 @@ public class Chess extends JPanel {
                 }
             }
         }
-
-    }
-
-    private void drawCoordinateNumbers(int i, Graphics g, int number) {
-        g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(number), 10, (25 * (i + 1) + (25 * i)) + 4);
-    }
-
-    private void drawChessboard(int i, int j, Graphics g, char[] letters, Graphics2D g2d, int x, int y) {
-        if (i % 2 != 0) {
-            if (j % 2 == 0) {
-                g.setColor(Color.DARK_GRAY);
-            } else {
-                g.setColor(Color.LIGHT_GRAY);
-            }
-        } else {
-            if (j % 2 == 0) {
-                g.setColor(Color.LIGHT_GRAY);
-            } else {
-                g.setColor(Color.DARK_GRAY);
-            }
-        }
-        Shape rect = new Rectangle(x, y, 50, 50);
-        g2d.fill(rect);
-        // Initialize cells array / create cells
-        if (Cell.cells.size() < 64) {
-            EnumColor color = g.getColor().toString().equals("DARK_GRAY") ? EnumColor.BLACK : EnumColor.WHITE;
-            Cell cell = new Cell(x, y, color, letters[j], (8 - i), rect, null);
-            Piece.createInitPiece(cell, i, j, letters);
-        }
-        g.setColor(Color.BLACK);
-        g.drawChars(letters, j, 1, (25 * (j + 1) + (25 * j)) + 28, 420);
     }
 
 }
